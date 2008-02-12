@@ -10,7 +10,7 @@ Proto.Cropper = Class.create({
     // building elements
     $w('clone overlay shim clip handle slider').each(function(component) {
       this[component] = this['_create' + component.capitalize()]();
-    })
+    }, this);
     
     this.delta = 0;
     this.clipOffset = 0;
@@ -33,85 +33,54 @@ Proto.Cropper = Class.create({
     
     this._observeClip();
     this._observeHandle();
+    
+    this.center();
   },
   
   /* PRIVATE */
   
   _createClone: function() {
-    return this.element.cloneNode(true)
-      .relativize()
-      .setStyle({top: 0, left: 0})
+    return this.element.cloneNode(true).addClassName('cropper-clone')
   },
   
   _createOverlay: function() {
-    return new Element('div', {id: 'cropper-overlay'})
+    return new Element('div', {className: 'cropper-overlay'})
       .absolutize()
       .setStyle({
-        opacity: 0.5,
-        background: '#000',
-        width: '100%',
-        height: '100%'
-      });
+        width: '100%', 
+        height: '100%',
+        opacity: 0.5
+      })
   },
   
   _createClip: function() {
     this.clone.removeAttribute('id');
-    return new Element('div', {id: 'cropper-clip'})
-      .absolutize()
-      .setStyle({
-        overflow: 'hidden',
-        width: '30%',
-        height: '50%'
-      })
+    return new Element('div', {className: 'cropper-clip'})
       .insert(this.clone)
       .insert(this.shim);
   },
   
   _createShim: function() {
-    return new Element('div').absolutize()
-    .setStyle({
-      width: '100%',
-      height: '100%',
-      top: 0,
-      left: 0,
-      cursor: 'all-scroll'
-    })
+    return new Element('div', {className: 'cropper-shim'})
   },
   
   _createHandle: function() {
-    return new Element('div', {id: 'cropper-handle'})
-      .absolutize()
-      .setStyle({
-        height: '10px',
-        width: '20px',
-        left: 0,
-        background: '#000'
-      })
+    return new Element('div', {className: 'cropper-handle'})
   },
   
   _createSlider: function() {
-    return new Element('div', {id: 'cropper-slider'})
-      .absolutize()
-      .setStyle({
-        bottom: '-20px',
-        top: '',
-        left: 0,
-        width: '100%',
-        height: '10px',
-        background: '#eee',
-        border: '1px solid #aaa'
-      })
+    return new Element('div', {className: 'cropper-slider'})
       .insert(this.handle)
   },
   
   _wrap: function() {
     this.element
-      .wrap({id: 'cropper-wrapper', style: 'border: 1px solid #666'})
+      .wrap({className: 'cropper-wrapper'})
       .setStyle({
         width: this.elDimensions.width + 'px',
-        height: this.elDimensions.height + 'px'
+        height: this.elDimensions.height + 'px',
+        position: 'relative'
       })
-      .relativize()
       .insert(this.overlay)
       .insert(this.clip)
       .insert(this.slider)
@@ -132,7 +101,7 @@ Proto.Cropper = Class.create({
   
   _observeHandle: function() {
     this.handle.observe('drag:started', function(e) {
-      this.handleOffset = parseInt(this.handle.style.left);
+      this.handleOffset = parseInt(this.handle.style.left || this.handle.getStyle('left'));
     }.bind(this))
     
     this.handle.observe('drag:updated', function(e) {
@@ -158,7 +127,26 @@ Proto.Cropper = Class.create({
     this.clone.style.left = -left + 'px';
   },
   
+  moveBy: function(top, left) {
+    this.clip.style.top = parseInt(this.clip.style.top) + top + 'px';
+    this.clip.style.left = parseInt(this.clip.style.left) + left + 'px';
+    this.clone.style.top = parseInt(this.clone.style.top) - top + 'px';
+    this.clone.style.left = parseInt(this.clone.style.left) - left + 'px';
+  },
+  
+  center: function() {
+    var top = (this.elDimensions.height - this.clipDimensions.height) / 2,
+        left = (this.elDimensions.width - this.clipDimensions.width) / 2;
+    this.position(top, left);
+  },
+  
   zoom: function(value) {
-    console.log(value);
+    var width = Math.min((this.clipDimensions.width + value), this.elDimensions.width),
+        height = Math.min((this.clipDimensions.height + value), this.elDimensions.height);
+    this.moveBy(-value/2, -value/2);
+    this.clipDimensions.width = width;
+    this.clipDimensions.height = height;
+    this.clip.style.width = width + 'px';
+    this.clip.style.height = height + 'px';
   }
 })

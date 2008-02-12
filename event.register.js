@@ -7,8 +7,8 @@
         element = Element.extend(element);
         for (var selector in rules[event.type]) {
           if (matches(rules[event.type][selector]._selector, element)) {
-            for (var j=0, handlers=rules[event.type][selector], lj=handlers.length; j<lj; ++j) {
-              handlers[j].call(element, Object.extend(Object.clone(event), { target: element }));
+            for (var i=0, handlers=rules[event.type][selector], l=handlers.length; j<l; ++j) {
+              handlers[i].call(element, Object.extend(Object.clone(event), { target: element }));
             }
           }
         }
