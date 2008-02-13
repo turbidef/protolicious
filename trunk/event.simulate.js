@@ -1,7 +1,7 @@
 Event.simulate = function(element, eventName) {
   var oEvent, options = Object.extend({
-	  pointerX: 0,
-  	pointerY: 0,
+    pointerX: 0,
+    pointerY: 0,
   	button:  0,
   	ctrlKey:  false,
   	altKey:   false,
