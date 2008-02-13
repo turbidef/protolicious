@@ -33,3 +33,15 @@ Ajax.Responders.register ({
     req.url = req.url + (req.url.indexOf('?') == -1 ? '?' : '&') + '_token=' + Date.now();
   }
 })
+
+/**
+ * Strip event handlers when removing an element
+ *
+ */
+Element.addMethods({
+  remove: Element.remove.wrap(function(proceed, element){
+    element = $(element);
+    [element].concat(element.descendants()).each(Element.stopObserving);
+    return proceed(element);
+  })
+})
