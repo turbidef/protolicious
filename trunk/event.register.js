@@ -7,14 +7,13 @@
         element = Element.extend(element);
         for (var selector in rules[event.type]) {
           if (matches(rules[event.type][selector]._selector, element)) {
-            for (var i=0, handlers=rules[event.type][selector], l=handlers.length; j<l; ++j) {
-              handlers[i].call(element, Object.extend(Object.clone(event), { target: element }));
+            for (var i=0, handlers=rules[event.type][selector], l=handlers.length; i<l; ++i) {
+              handlers[i].call(element, Object.extend(event, { _target: element }));
             }
           }
         }
       }
     } while (element = element.parentNode)
-    event.stop();
   }
   var matches = function(selectors, element) {
     for (var i=0, l=selectors.length; i<l; ++i) {
@@ -51,4 +50,8 @@
     }
   }
   Event.observe(window, 'unload', Event.unregister.curry(null, null));
+  Event.element = function(event) {
+    event = Event.extend(event); var node = event._target || event.target;
+    return Element.extend(node.nodeType == Node.TEXT_NODE ? node.parentNode : node);
+  };
 })();
