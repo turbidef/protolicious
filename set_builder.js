@@ -22,7 +22,7 @@ SetBuilder = function(expr, scope) {
   var scope = scope || this,
       re = /([^|]*)\|([^<]*)<-([^,]*),([^$]*)$/,
       match = expr.match(re),
-			id, action, source, condition, results = [];
+      id, action, source, condition, results = [];
 
   if (!match) throw new Error('Error parsing expression');
 
