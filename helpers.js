@@ -68,8 +68,11 @@ Field.Methods.isEmpty = function(element) {
 }
 
 
-// Little helper to change element's attribute given pattern and replacement (RegExp object)
-// Encapsulates verbose el.writeAttribute(attr, el.readAttribute(attr))
+/**
+ * Little helper to change element's attribute given pattern and replacement (RegExp object)
+ * Encapsulates verbose el.writeAttribute(attr, el.readAttribute(attr))
+ *
+ */ 
 Element.Methods.replaceAttribute = function(element, attr, pattern, replacement) {
   element = $(element);
   return el.writeAttribute(attr, element.readAttribute(attr)
@@ -78,7 +81,13 @@ Element.Methods.replaceAttribute = function(element, attr, pattern, replacement)
 }
 
 
-// Replaces innerHTML of an element given pattern and replacement
-replaceHTML: function(element, pattern, replacement) {
-  return $(element).update($(element).innerHTML.replace(new RegExp(pattern), replacement));
-},
+/**
+ * Replaces innerHTML of an element given pattern and replacement
+ *
+ */
+Element.Methods.replaceHTML = function(element, pattern, replacement) {
+  element = $(element);
+  return element.update(
+    element.innerHTML.replace(new RegExp(pattern), replacement)
+  );
+}
