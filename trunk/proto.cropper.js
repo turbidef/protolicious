@@ -28,8 +28,7 @@ Proto.Cropper = Class.create({
     
     this.handleWidth = this.handle.getWidth();
     
-    new DragHelper(this.clip);
-    new DragHelper(this.handle);
+    [this.clip, this.handle].invoke('enableDrag');
     
     this._observeClip();
     this._observeHandle();
