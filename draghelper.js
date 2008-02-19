@@ -3,63 +3,71 @@
  *  http://svn.prototype-ui.com/public/prototype-ui/trunk/src/util/drag.js
  *
  */
-DragHelper = Class.create({
-  initialize: function(element) {
-    this.element = $(element);
-    $w(' mousedown mousemove mouseup ').each(function(eventName) {
-      this[eventName + 'Event'] = this['on' + eventName.capitalize()].bind(this);
-    }, this);
-    this.element.observe("mousedown", this.mousedownEvent);
-  },
-  
-  onMousedown: function(event) {
-    var target = event.findElement('body *');
-    if (!target) return;
-    this.dragged = target;
-    Object.extend(this, event.pointer());
-    document
-      .observe("mousemove", this.mousemoveEvent)
-      .observe("mouseup",   this.mouseupEvent);
-  },
+ (function() {
+   var initPointer, currentDraggable, dragging;
 
-  onMousemove: function(event) {
-    event.stop();
-    if (!this.dragging)
-      return this.startDrag(event);
-    this.fire('drag:updated', event);
-  },
+   document.observe('mousedown', onMousedown);
 
-  onMouseup: function(event) {
-    document.stopObserving("mousemove", this.mousemoveEvent)
-            .stopObserving("mouseup", this.mouseupEvent);
-    if (!this.dragging) return;
-    event.stop();
-    this.endDrag(event);
-  },
+   function onMousedown(event) {
+     var draggable = event.findElement('[ui:draggable="true"]');
 
-  startDrag: function(event) {
-    this.savedCallbacks = DragHelper.eventsToStop.inject({ }, function(save, name) {
-      save[name] = document.body[name];
-      document.body[name] = Prototype.falseFunction;
-      return save;
-    });
-    this.dragging = true;
-    this.fire('drag:started', event);
-  },
+     if (draggable) {
+       // prevent default browser action
+       event.stop();
+       currentDraggable = draggable;
+       initPointer = event.pointer();
 
-  endDrag: function(event) {
-    this.dragging = false;
-    this.fire('drag:ended', event);
-  },
+       document.observe("mousemove", onMousemove)
+               .observe("mouseup",   onMouseup);
+     }
+   };
 
-  fire: function(eventName, event) {
-    var pointer = event.pointer();
-    this.dragged.fire(eventName, {
-      dragX: pointer.x - this.x,
-      dragY: pointer.y - this.y,
-      mouseEvent: event
-    });
-  }
-});
+   function onMousemove(event) {
+     event.stop();
 
-DragHelper.eventsToStop = $w(' ondrag onselectstart ');
+     if (dragging)
+       fire('drag:updated', event);
+     else {
+       dragging = true;
+       fire('drag:started', event);
+     }
+   };
+
+   function onMouseup(event) {
+     document.stopObserving('mousemove', onMousemove)
+             .stopObserving('mouseup',   onMouseup);
+
+     if (dragging) {
+       dragging = false;
+       fire('drag:ended', event);
+     }
+   };
+
+   function fire(eventName, mouseEvent) {
+     var pointer = mouseEvent.pointer();
+
+     currentDraggable.fire(eventName, {
+       dx: pointer.x - initPointer.x,
+       dy: pointer.y - initPointer.y,
+       mouseEvent: mouseEvent
+     })
+   };
+
+   Element.addMethods({
+     enableDrag: function(element) {
+       element = $(element);
+       element.writeAttribute('ui:draggable', 'true');
+       return element;
+     },
+
+     disableDrag: function(element){
+       element = $(element);
+       element.writeAttribute('ui:draggable', null);
+       return element;
+     },
+
+     isDraggable: function(element) {
+       return $(element).readAttribute('ui:draggable') == 'true';
+     }
+   });
+ })();

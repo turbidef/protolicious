@@ -5,12 +5,12 @@
  * @return  Boolean true if element's innerHTML property matches with specified text
  *
  */
-Element.addMethods({
-  contains: function(element, content) { 
-    element = $(element);
-    return !!element.innerHTML.stripTags().match(RegExp.escape(content))
-  }
-})
+function contains(element, content) { 
+  element = $(element);
+  return !!element.innerHTML.stripTags().match(RegExp.escape(content))
+}
+Element.addMethods(contains);
+
 
 /**
  * @usage   $w(" MyApp util Dom ").namespace(Prototype); //=> Prototype.MyApp.util.Dom
@@ -24,15 +24,16 @@ Array.prototype.namespace = function() {
   })
 }
 
+
 /**
  * Preventing IE from caching Ajax requests
  *
  */
-Ajax.Responders.register ({
-  onCreate: function(req) {
-    req.url = req.url + (req.url.indexOf('?') == -1 ? '?' : '&') + '_token=' + Date.now();
-  }
-})
+function tokenize(req) {
+  req.url = req.url + (req.url.indexOf('?') == -1 ? '?' : '&') + '_token=' + Date.now();
+}
+Ajax.Responders.register({onCreate: tokenize})
+
 
 /**
  * Strip event handlers when removing an element
@@ -45,3 +46,14 @@ Element.addMethods({
     return proceed(element);
   })
 })
+
+
+/**
+ * Removes element from the document, returning it's HTML representation
+ *
+ */
+function toTemplate(element) {
+  if (!(element = $(element))) return null;
+  return element.wrap().show().up().remove().innerHTML;
+}
+Element.addMethods(toTemplate)
