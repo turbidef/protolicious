@@ -5,11 +5,10 @@
  * @return  Boolean true if element's innerHTML property matches with specified text
  *
  */
-function contains(element, content) { 
+Element.Methods.contains = function(element, content) { 
   element = $(element);
   return !!element.innerHTML.stripTags().match(RegExp.escape(content))
 }
-Element.addMethods(contains);
 
 
 /**
@@ -29,31 +28,57 @@ Array.prototype.namespace = function() {
  * Preventing IE from caching Ajax requests
  *
  */
-function tokenize(req) {
-  req.url = req.url + (req.url.indexOf('?') == -1 ? '?' : '&') + '_token=' + Date.now();
-}
-Ajax.Responders.register({onCreate: tokenize})
+Ajax.Responders.register({
+  onCreate: function(req) {
+    req.url = req.url + (req.url.indexOf('?') == -1 ? '?' : '&') 
+      + '_token=' + Date.now();
+  }
+})
 
 
 /**
  * Strip event handlers when removing an element
  *
  */
-Element.addMethods({
-  remove: Element.remove.wrap(function(proceed, element){
+Element.Methods.remove = Element.remove.wrap(
+  function(proceed, element) {
     element = $(element);
     [element].concat(element.descendants()).each(Element.stopObserving);
     return proceed(element);
-  })
-})
+  }
+)
 
 
 /**
  * Removes element from the document, returning it's HTML representation
  *
  */
-function toTemplate(element) {
+Element.Methods.toTemplate = function(element) {
   if (!(element = $(element))) return null;
   return element.wrap().show().up().remove().innerHTML;
 }
-Element.addMethods(toTemplate)
+
+
+/**
+ * Are any of the form fields empty?
+ *
+ */
+Field.Methods.isEmpty = function(element) {
+  return $(element).getElements().any(Element.present);
+}
+
+
+// Little helper to change element's attribute given pattern and replacement (RegExp object)
+// Encapsulates verbose el.writeAttribute(attr, el.readAttribute(attr))
+Element.Methods.replaceAttribute = function(element, attr, pattern, replacement) {
+  element = $(element);
+  return el.writeAttribute(attr, element.readAttribute(attr)
+    .replace(new RegExp(pattern), replacement)
+  )
+}
+
+
+// Replaces innerHTML of an element given pattern and replacement
+replaceHTML: function(element, pattern, replacement) {
+  return $(element).update($(element).innerHTML.replace(new RegExp(pattern), replacement));
+},
