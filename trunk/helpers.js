@@ -91,3 +91,15 @@ Element.Methods.replaceHTML = function(element, pattern, replacement) {
     element.innerHTML.replace(new RegExp(pattern), replacement)
   );
 }
+
+
+(function(){
+  Prototype.Q = {}
+  for (var method in Element.methods) {
+    Prototype.Q[method] = function(){ return Prototype.Q }
+  }
+  $ = $.wrap(function(){
+    var args = $A(arguments), proceed = args.shift();
+    return proceed.apply(proceed, args) || Prototype.Q;
+  })
+})()
