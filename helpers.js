@@ -93,6 +93,21 @@ Element.Methods.replaceHTML = function(element, pattern, replacement) {
 }
 
 
+Element.Methods.toHTML = function(element) {
+  element = $(element);
+  try {
+    var xmlSerializer = new XMLSerializer();
+    return element.nodeType == 4
+      ? element.nodeValue
+      : xmlSerializer.serializeToString(element);
+  } catch(e) {
+    return element.xml 
+      || element.outerHTML
+      || element.cloneNode(true).wrap().innerHTML;
+  }
+}
+
+
 (function(){
   Prototype.Q = {}
   for (var method in Element.methods) {
