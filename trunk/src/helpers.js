@@ -23,6 +23,34 @@ Array.prototype.namespace = function() {
   })
 }
 
+/**
+ * Returns negated function
+ * 
+ * e.g. Find all hidden elements:
+ * 
+ * $$('*').findAll(function(element) { return !element.visible() }); // old way
+ * $$('*').findAll(Element.visible.negate()); // using negate
+ *
+ */
+Function.prototype.negate = function() {
+  var f = this, args = $A(arguments);
+  return function() {
+    return !f.apply(f, args);
+  }
+}
+
+/**
+ * Calls and returns function
+ *
+ * myElement.toggle();
+ * input.observe('change', myElement.toggle); // old way
+ * 
+ * input.observe('change', myElement.toggle.invoke()); // using invoke
+ */
+Function.prototype.invoke = function() {
+  this.apply(this, $A(arguments)); return this;
+}
+
 
 /**
  * Preventing IE from caching Ajax requests
@@ -118,3 +146,20 @@ Element.Methods.toHTML = function(element) {
     return proceed.apply(proceed, args) || Prototype.Q;
   })
 })()
+
+
+/*
+
+Label support in Safari 2
+
+*/
+document.observe('click', function(e) {
+  var target = e.findElement('label[for]');
+  if (!target) return;
+  var input = $(target.readAttribute('for'));
+  if (!input) return;
+  input.focus();
+  if (!Object.isUndefined(input.checked)) {
+    input.checked = !input.checked;
+  }
+})
