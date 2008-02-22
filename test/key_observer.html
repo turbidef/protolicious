@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  	<title>Key observer</title>
+  	<script src="../lib/prototype.js" type="text/javascript" charset="utf-8"></script>
+  	<script src="../src/key_observer.js" type="text/javascript" charset="utf-8"></script>
+  	<script type="text/javascript" charset="utf-8">
+  	  document.observe('dom:loaded', function() {
+  	    var testlog = $('testlog'), hash = { };
+  	    for (var prop in Event) {
+          if (prop.startsWith('KEY_'))
+            hash[Event[prop]] = prop.replace('KEY_', '').toLowerCase();
+        }
+        $H(hash).values().each(function(eName) {
+          document.observe('key:' + eName, function(e){
+            e.stop();
+            testlog.insert(eName + '<br/>');
+          })
+        })
+  	  })
+  	</script>
+  </head>
+  <body>
+    <div id="testlog">
+      
+    </div>
+  </body>
+</html>
