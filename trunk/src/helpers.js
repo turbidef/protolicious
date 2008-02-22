@@ -68,7 +68,7 @@ Ajax.Responders.register({
  * Strip event handlers when removing an element
  *
  */
-Element.Methods.remove = Element.remove.wrap(
+Element.Methods.remove = Element.Methods.remove.wrap(
   function(proceed, element) {
     element = $(element);
     [element].concat(element.descendants()).each(Element.stopObserving);
