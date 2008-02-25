@@ -169,7 +169,7 @@ document.observe('click', function(e) {
  * Boosts Field#present to work somewhat more reasonably 
  * with any form control (element with type attribute)
  * 
- * - "reset, submit and button" always return true
+ * - "reset, submit, button and hidden" always return true
  * - "text, password and file" return true if value attribute is anything but whitespace
  * - "checkbox" return true if checked attribute is not false
  * - "radio" return true if either checked attribute is not false 
@@ -181,7 +181,7 @@ Field.Methods.present = function(element) {
   if (!(element = $(element)) && !element.type) return;
   var t = element.type;
   return ((/text|password|file/.test(t) && !element.value.blank()) ||
-    /reset|submit|button/.test(t) ||
+    /reset|submit|button|hidden/.test(t) ||
     (t == 'checkbox' && element.checked) ||
     (t == 'radio' && (element.checked || $$('input[name=' + element.name + ']:checked').length))
     (/select-one|select-multiple/.test(t) && element.selectedIndex != -1));
