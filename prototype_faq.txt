@@ -39,6 +39,11 @@ A:  The easiest way is to use jQuery's noConflict.
     http://docs.jquery.com/Using_jQuery_with_Other_Libraries
 
 
+Q:  Is it possible to extend elements by criteria other than tagName (e.g. by className or an attribute)?
+A:  Not in a current implementation. The extension mechanism is complex enough 
+    and such support would most likely lead to unnecessary complexity.
+
+
 Q:  Script.aculou.us wiki is down. Help!
 A:  You could use an offline version of docs.
     http://www.m3nt0r.de/blog/scriptaculous-offline-docs/
