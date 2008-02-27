@@ -78,7 +78,7 @@ A:  http://scripteka.com
     http://wiki.script.aculo.us/scriptaculous/show/EffectsTreasureChest
     
 Q:  I'm stuck. Where should I look for help?
-    Join #prototype channel on irc.freenode.net or use "prototype users mailing list".
+A:  Join #prototype channel on irc.freenode.net or use "prototype users mailing list".
     The "prototype core" mailing list is only for development related issues.
     http://groups-beta.google.com/group/rubyonrails-spinoffs
     http://groups-beta.google.com/group/prototype-core
