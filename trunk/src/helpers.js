@@ -33,9 +33,9 @@ Array.prototype.namespace = function() {
  *
  */
 Function.prototype.negate = function() {
-  var f = this, args = $A(arguments);
+  var f = this;
   return function() {
-    return !f.apply(f, args);
+    return !f.apply(f, arguments);
   }
 }
 
