@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Prototype.js FAQ</title>
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.0/build/reset-fonts-grids/reset-fonts-grids.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.0/build/base/base-min.css" />
+    <style type="text/css">
+      body { text-align: left; font-family: "Lucida Grande", Verdana, sans-serif; font-size: 85%; }
+      dt { font-weight: bold; font-size: 1.2em; margin-top: 1.5em; }
+      dd { margin-top: 0.5em; }
+    </style>
+	</head>
+	<body>
+		<dl>
+			<dt>IE throws error: "Object does not support this property or method". What happened?</dt>
+			<dd>
+				<ul>
+				  <li>
+				    <a href="http://www.prototypejs.org/learn/extensions">
+				      http://www.prototypejs.org/learn/extensions
+				    </a>
+				  </li>
+				</ul>
+			</dd>
+			<dt>Error is thrown: this.&lt;blah&gt; is not a function. What happened?</dt>
+			<dd>
+			  This is most likely an execution context (scope) problem. 
+			  Iterators (which are used in Enumerable methods) and event handlers (used in Element#observe) are executed within global context. 
+			  Changing the execution context is as easy as using Function#bind or Function#bindAsEventListener.
+				 <ul>
+				  <li>
+				    <a href="http://alternateidea.com/blog/articles/2007/7/18/javascript-scope-and-binding">
+    				   http://alternateidea.com/blog/articles/2007/7/18/javascript-scope-and-binding
+    				</a>
+				  </li>
+				  <li>
+				    <a href="http://www.prototypejs.org/api/enumerable" title="">
+    				   http://www.prototypejs.org/api/enumerable
+    				</a>
+				  </li>
+  				 
+  				 <li>
+  				   <a href="http://www.prototypejs.org/api/event/observe" title="">
+     				   http://www.prototypejs.org/api/event/observe
+     				 </a>
+  				 </li>
+  				 <li>
+  				   <a href="http://www.prototypejs.org/api/function/bind" title="">
+     				   http://www.prototypejs.org/api/function/bind
+     				 </a>
+  				 </li>
+  				 <li>
+  				   <a href="http://www.prototypejs.org/api/function/bindAsEventListener" title="">
+     			     http://www.prototypejs.org/api/function/bindAsEventListener
+     				 </a>
+  				 </li>
+				 </ul>
+			 </dd>
+      <dt>I get all kinds of weird output when iterating over an array using for..in.</dt>
+      <dd>
+		    for..in should not be used to iterate over arrays
+		    <ul>
+		      <li>
+		        <a href="http://andrewdupont.net/2006/05/18/javascript-associative-arrays-considered-harmful/" title="">
+    		      http://andrewdupont.net/2006/05/18/javascript-associative-arrays-considered-harmful/
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+      <dt>Something doesn't work as expected. What should I do?</dt>
+      <dd>
+		    <ol>
+		      <li>
+		        Get the latest version of prototype.
+		      </li>
+		      <li>
+		        Make sure a document has a proper doctype and is valid. <a href="http://validator.w3.org/" title="">http://validator.w3.org/</a>
+		      </li>
+		      <li>
+		        There could be a conflict with other scripts in a document. Try narrowing down the conflicting ones.
+		      </li>
+		    </ol>
+      </dd>
+      <dt>My applications slows down when I use Event#observe on 1000+ cells in a table.</dt>
+      <dd>
+		    Event delegation could increase performance (and reduce memory usage) in such cases.
+		    <ul>
+		      <li>
+		        <a href="http://icant.co.uk/sandbox/eventdelegation/" title="">
+    		      http://icant.co.uk/sandbox/eventdelegation/
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://cherny.com/webdev/70/javascript-event-delegation-and-event-hanlders" title="">
+    		      http://cherny.com/webdev/70/javascript-event-delegation-and-event-hanlders
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://mislav.caboo.se/js/handling-events-on-elements/" title="">
+    		      http://mislav.caboo.se/js/handling-events-on-elements/
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+      <dt>MHow do I make prototype work together with jQuery?</dt>
+      <dd>
+		    The easiest way is to use jQuery's noConflict.
+		    <ul>
+		      <li>
+		        <a href="http://docs.jquery.com/Using_jQuery_with_Other_Libraries" title="">
+    		      http://docs.jquery.com/Using_jQuery_with_Other_Libraries
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+      <dt>Is it possible to extend elements by criteria other than tagName (e.g. by className or an attribute)?</dt>
+      <dd>
+		    Not in a current implementation. The extension mechanism is complex enough and such support would most likely lead to unnecessary complexity.
+      </dd>
+      <dt>Script.aculou.us wiki is down. Help!</dt>
+      <dd>
+		    You could use an offline version of docs.
+		    <ul>
+		      <li>
+		        <a href="http://www.m3nt0r.de/blog/scriptaculous-offline-docs/" title="">
+    		      http://www.m3nt0r.de/blog/scriptaculous-offline-docs/
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+      <dt>Are there any offline resources for prototype?</dt>
+      <dd>
+		    <ul>
+		      <li>
+		        <a href="http://globalmoxie.com/projects/prototype-pdf/index.shtml" title="">
+    		      http://globalmoxie.com/projects/prototype-pdf/index.shtml
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://thinkweb2.com/projects/prototype/prototype-1602-cheat-sheet/" title="">
+    		      http://thinkweb2.com/projects/prototype/prototype-1602-cheat-sheet/
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+      <dt>Where can I find prototype/scriptaculous tutorials?</dt>
+      <dd>
+		    <ul>
+		      <li>
+		        <a href="http://www.prototypejs.org/learn" title="">
+    		      http://www.prototypejs.org/learn
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://alternateidea.com/tags/prototype/" title="">
+    		      http://alternateidea.com/tags/prototype/
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://andrewdupont.net/categories/web/development/javascript/prototype/" title="">
+    		      http://andrewdupont.net/categories/web/development/javascript/prototype/
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://tobielangel.com/tags/prototype" title="">
+    		      http://tobielangel.com/tags/prototype
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://mislav.caboo.se/js/" title="">
+    		      http://mislav.caboo.se/js/
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://thinkweb2.com/projects/prototype/" title="">
+    		      http://thinkweb2.com/projects/prototype/
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+      <dt>Are there any books on Prototype/Scriptaculous?</dt>
+      <dd>
+		    <ul>
+		      <li>
+		        <a href="http://www.pragprog.com/titles/cppsu" title="">
+    		      http://www.pragprog.com/titles/cppsu
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://www.amazon.com/Prototype-Scriptaculous-Action-Ajax-Crane/dp/1933988037" title="">
+    		      http://www.amazon.com/Prototype-Scriptaculous-Action-Ajax-Crane/dp/1933988037
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+      <dt>Where can I find a packed/minified/compressed version of prototype/scriptaculous?</dt>
+      <dd>
+		    <ul>
+		      <li>
+		        <a href="http://groups.google.com/group/prototype-core/files" title="">
+    		      http://groups.google.com/group/prototype-core/files
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+      <dt>Where can I find 3rd party plugins/extensions for prototype/scriptaculous?</dt>
+      <dd>
+		    <ul>
+		      <li>
+		        <a href="http://scripteka.com" title="">
+    		      http://scripteka.com
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://www.ajaxrain.com/tagcloud.php?tag=prototype#script" title="">
+    		      http://www.ajaxrain.com/tagcloud.php?tag=prototype#script
+    		    </a>
+		      </li>
+		      <li>
+		        <a href="http://wiki.script.aculo.us/scriptaculous/show/EffectsTreasureChest/" title="">
+    		      http://wiki.script.aculo.us/scriptaculous/show/EffectsTreasureChest/
+    		    </a>
+		      </li>
+		    </ul>
+      </dd>
+    </dl>
+	</body>
+</html>
