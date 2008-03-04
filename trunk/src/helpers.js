@@ -186,3 +186,16 @@ Field.Methods.present = function(element) {
     (t == 'radio' && (element.checked || $$('input[name=' + element.name + ']:checked').length))
     (/select-one|select-multiple/.test(t) && element.selectedIndex != -1));
 }
+
+/**
+ * Change Element#observe to imlicitly stop event when executing event handler
+ *
+ * $(someLink)._observe('click', function(e) { ... }) // <= event is stopped automatically
+ */
+Element.addMethods({
+  _observe: Element.observe.wrap(function(proceed, element, eventName, handler) {
+    return proceed.call(proceed, element, eventName, function(e) {
+      Event.stop(e); handler.call(e.target, e);
+    })
+  })
+});
